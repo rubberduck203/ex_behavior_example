@@ -20,11 +20,6 @@ defmodule ExBehaviorExample do
       
   """
   def hello(message, opts \\ []) do
-    # case Keyword.fetch(opts, :writer) do
-    #   {:ok, writer} -> writer
-    #   {:error, _} -> @default_writer
-    # end
-    # might be more appropriate than pop
     {writer, opts} = Keyword.pop(opts, :writer, @default_writer)
     writer.write(message)
   end
@@ -43,4 +38,17 @@ defmodule ExBehaviorExample do
 
     writer.write(message)
   end
+
+  def config_hello_better_error_message(message) do
+    config = Application.get_all_env(:ex_behavior_example)
+              |> Keyword.fetch(:writer)
+
+    writer = case config do
+      {:ok, writer} -> writer
+      :error -> raise "No writer defined. config must define a :writer behavior."
+    end
+
+    writer.write(message)
+  end
+
 end
