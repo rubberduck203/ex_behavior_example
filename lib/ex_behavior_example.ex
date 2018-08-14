@@ -20,6 +20,11 @@ defmodule ExBehaviorExample do
       
   """
   def hello(message, opts \\ []) do
+    # case Keyword.fetch(opts, :writer) do
+    #   {:ok, writer} -> writer
+    #   {:error, _} -> @default_writer
+    # end
+    # might be more appropriate than pop
     {writer, opts} = Keyword.pop(opts, :writer, @default_writer)
     writer.write(message)
   end
@@ -30,7 +35,7 @@ defmodule ExBehaviorExample do
   ## Examples
 
       ExBehaviorExample.config_hello("Yolo!")
-      
+
   """
   def config_hello(message) do
     config = Application.get_env(:ex_behavior_example, __MODULE__, [])
