@@ -51,4 +51,12 @@ defmodule ExBehaviorExample do
     writer.write(message)
   end
 
+  def use_config_and_injection do
+    opts = Application.get_all_env(:ex_behavior_example)
+    #opts = [writer: FileWriter]
+    hello("applesauce", opts)
+
+    # at this point, might as well just pass the writer in,
+    # unless we want to specify the default inside the function.
+  end
 end
