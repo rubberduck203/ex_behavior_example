@@ -38,8 +38,9 @@ defmodule ExBehaviorExample do
 
   """
   def config_hello(message) do
-    config = Application.get_env(:ex_behavior_example, __MODULE__, [])
-    writer = config[:writer] || @default_writer
+    writer = Application.get_all_env(:ex_behavior_example)
+              |> Keyword.fetch!(:writer)
+
     writer.write(message)
   end
 end
