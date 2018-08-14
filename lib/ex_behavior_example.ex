@@ -24,6 +24,12 @@ defmodule ExBehaviorExample do
     writer.write(message)
   end
 
+  def hello do
+    opts = Application.get_all_env(:ex_behavior_example)
+    #opts = [writer: FileWriter]
+    hello("applesauce", opts)
+  end
+
   @doc """
   Uses Mix config to specify the implementation.
 
@@ -33,30 +39,7 @@ defmodule ExBehaviorExample do
 
   """
   def config_hello(message) do
-    writer = Application.get_all_env(:ex_behavior_example)
-              |> Keyword.fetch!(:writer)
-
+    writer = Application.get_env(:ex_behavior_example, :writer, ConsoleWriter)
     writer.write(message)
-  end
-
-  def config_hello_better_error_message(message) do
-    config = Application.get_all_env(:ex_behavior_example)
-              |> Keyword.fetch(:writer)
-
-    writer = case config do
-      {:ok, writer} -> writer
-      :error -> raise "No writer defined. config must define a :writer behavior."
-    end
-
-    writer.write(message)
-  end
-
-  def use_config_and_injection do
-    opts = Application.get_all_env(:ex_behavior_example)
-    #opts = [writer: FileWriter]
-    hello("applesauce", opts)
-
-    # at this point, might as well just pass the writer in,
-    # unless we want to specify the default inside the function.
   end
 end
